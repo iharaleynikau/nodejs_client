@@ -1,12 +1,16 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const path = require('path')
+const authRouter = require('./auth.routes')
+const mongoose = require('mongoose')
+const authMiddleware = require('./middleware/auth.middleware')
 
 const app = express()
 
 const PORT = 3000
 
 app.use(bodyParser.json())
+app.use('/auth', authRouter)
 
 app.use('/', express.static(path.join(__dirname, 'client')))
 
@@ -14,15 +18,17 @@ app.get('/', (req, res) => {
   res.sendFile(path.resolve(__dirname, 'client', 'index.html'))
 })
 
-app.get('/testGet', (req, res) => res.send('Hello World!'))
+app.use('/secretPage', authMiddleware, (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'client', 'secretPage.html'))
+})
 
-app.post('/testPost', function (req, res) {
-  if (req.body.user === 'Peter' && req.body.password === '1234') {
-    res.send('200 OK')
-  } else {
-    res.send('500 ERROR')
+const start = async () => {
+  try {
+    await mongoose.connect(`mongodb+srv://Igor:camel1234@cluster0.ctgvw7a.mongodb.net/?retryWrites=true&w=majority`)
+    app.listen(PORT, () => console.log(`Server started on port ${PORT}`))
+  } catch (error) {
+    console.log(error)
   }
-});
+}
 
-
-app.listen(PORT, () => console.log(`Server localhost:${PORT} has been started`))
+start()

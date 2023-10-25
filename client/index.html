@@ -5,18 +5,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="./style.css">
-  <title>Document</title>
+  <title>Auth Page</title>
 </head>
 
 <body>
   <div class="main">
     <div class="container">
-      <input type="text" name="user">
-      <input type="password" name="password">
-      <button id="button">Submit</button>
+      <input placeholder="Enter name..." type="text" name="user">
+      <input placeholder="Enter password..." type="password" name="password">
+      <div id="passwordError" class="error"></div>
+
+      <div id="loader" class="loader" style="display: none;"></div>
+      <button id="buttonLogin">Log in</button>
+      <button id="buttonRegister">Register</button>
+      <button id="buttonLogout">Logout</button>
     </div>
   </div>
-  <script src="./script.js"></script>
+  <script type="module" src="./script.js"></script>
 </body>
 
 </html>
